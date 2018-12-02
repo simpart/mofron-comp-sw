@@ -1,0 +1,22 @@
+{
+  "name": "mofron-comp-switch",
+  "version": "0.0.3",
+  "description": "switch component for mofron",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simpart/mofron-comp-sw.git"
+  },
+  "keywords": [
+    "front-end"
+  ],
+  "author": "simparts",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/simpart/mofron-comp-sw/issues"
+  },
+  "homepage": "https://github.com/simpart/mofron-comp-sw#readme"
+}

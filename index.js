@@ -66,6 +66,11 @@ mf.comp.Switch = class extends mf.Component {
                     (cidx == idx) ? true : false
                 );
             }
+            /* execute switch event */
+            let evt = this.switchEvent();
+            for (let eidx in evt) {
+                evt[eidx][0](this, this.swIndex(), evt[eidx][1]);
+            }
         } catch (e) {
             console.error(e.stack);
             throw e;
@@ -79,6 +84,26 @@ mf.comp.Switch = class extends mf.Component {
      */
     swIndex (prm) {
         try { return this.member('swIndex', 'number', prm, 0); } catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
+    
+    switchEvent (fnc, prm) {
+        try {
+            if (undefined === fnc) {
+                /* getter */
+                return (undefined === this.m_swhevt) ? null : this.m_swhevt;
+            }
+            /* setter */
+            if ('function' !== typeof fnc) {
+                throw new Error('invalid parameter');
+            }
+            if (undefined === this.m_swhevt) {
+                this.m_swhevt = [];
+            }
+            this.m_swhevt.push([fnc, prm]);
+        } catch (e) {
             console.error(e.stack);
             throw e;
         }

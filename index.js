@@ -1,16 +1,18 @@
 /**
- * @file   mofron-comp-sw/index.js
+ * @file mofron-comp-sw/index.js
+ * @brief switching display components by 'switching' function.
+ *        switching the display to a specified index number of the child component.
+ *        switch in ascending order if it has no parameter.
  * @author simpart
  */
 const mf = require('mofron');
 
-
 mf.comp.Switch = class extends mf.Component {
-    
     /**
      * initialize component
      * 
-     * @param po paramter or option
+     * @param (component) child component
+     * @type private
      */
     constructor (po) {
         try {
@@ -25,18 +27,12 @@ mf.comp.Switch = class extends mf.Component {
     /**
      * initialize switching
      *
-     * @note private method
+     * @type private
      */
     beforeRender () {
         try {
             super.beforeRender();
-            let chd = this.child();
-            for (let cidx=0; cidx < chd.length ; cidx++) {
-                if (0 == cidx) {
-                    continue;
-                }
-                chd[cidx].visible(false);
-            }
+	    this.switching(this.index(), false);
         } catch (e) {
             console.error(e.stack);
             throw e;
@@ -46,30 +42,34 @@ mf.comp.Switch = class extends mf.Component {
     /**
      * switching component
      * 
-     * @param p1 (number) swithing to specipied index 
-     * @param p1 (undefined) swithing to current index+1
+     * @param (mixed) number: swithing to specipied index 
+     *                undefined: switching to current index+1 if it has no parameter.
+     * @param (boolean) undefined: switching with swtich event.
+     *                  false: switching without switch event
+     * @type function
      */
-    swComp (idx) {
+    switching (idx, eflg) {
         try {
             let chd = this.child();
             if (0 === chd.length) {
                 return;
             }
             if (undefined === idx) {
-                idx = (chd.length === this.swIndex()+1) ? 0 : this.swIndex()+1;
+                idx = (chd.length === this.index()+1) ? 0 : this.index()+1;
             } else if ( (0 > idx) || (chd.length <= idx) ) {
                 throw new Error('invalid index');
             }
-            this.swIndex(idx);
+            this.index(idx);
             for (let cidx in chd) {
-                chd[cidx].visible(
-                    (cidx == idx) ? true : false
-                );
+                chd[cidx].visible((cidx == idx) ? true : false);
             }
-            /* execute switch event */
-            let evt = this.switchEvent();
-            for (let eidx in evt) {
-                evt[eidx][0](this, this.swIndex(), evt[eidx][1]);
+
+	    if (false !== eflg) {
+                /* execute switch event */
+                let evt = this.switchEvent();
+                for (let eidx in evt) {
+                    evt[eidx][0](this, this.index(), evt[eidx][1]);
+                }
             }
         } catch (e) {
             console.error(e.stack);
@@ -80,29 +80,36 @@ mf.comp.Switch = class extends mf.Component {
     /**
      * current switching index getter
      * 
+     * @param (number) switching index number
      * @return (number) current switching index
+     * @attention setter is private method.
+     * @type function
      */
-    swIndex (prm) {
-        try { return this.member('swIndex', 'number', prm, 0); } catch (e) {
+    index (prm) {
+        try { return this.member('index', 'number', prm, 0); } catch (e) {
             console.error(e.stack);
             throw e;
         }
     }
     
+    /**
+     * switch event functions
+     * 
+     * @param (function) switch event function
+     * @param (mixed) event parameter
+     * @type parameter
+     */
     switchEvent (fnc, prm) {
         try {
             if (undefined === fnc) {
-                /* getter */
-                return (undefined === this.m_swhevt) ? null : this.m_swhevt;
-            }
-            /* setter */
-            if ('function' !== typeof fnc) {
-                throw new Error('invalid parameter');
-            }
-            if (undefined === this.m_swhevt) {
-                this.m_swhevt = [];
-            }
-            this.m_swhevt.push([fnc, prm]);
+	        /* getter */
+                return this.arrayMember("switchEvent");
+	    }
+	    /* setter */
+	    if ('function' !== typeof fnc) {
+	        throw new Error('invalid parameter');
+	    }
+	    this.arrayMember("switchEvent", "object", [fnc,prm]);
         } catch (e) {
             console.error(e.stack);
             throw e;

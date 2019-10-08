@@ -15,7 +15,21 @@ npm install mofron mofron-comp-sw
 
 # Sample
 ```html
-undefined```
+<require>
+    <tag module="mofron-comp-switch">Switch</tag>
+    <tag module="mofron-comp-button">Button</tag>
+    <tag module="mofron-event-click">Click</tag>
+</require>
+
+<script name=clk run=init>
+sw.switching();
+</script>
+
+<Switch name=sw event=Click(clk)>
+    <Button width=1rem>On</Button>
+    <Button width=1rem>OFF</Button>
+</Switch>
+```
 # Parameter
 
 |Simple<br>Param | Parameter Name | Type | Description |

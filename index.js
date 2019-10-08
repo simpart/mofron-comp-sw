@@ -115,6 +115,126 @@ mf.comp.Switch = class extends mf.Component {
             throw e;
         }
     }
+
+    /**
+     * set height to child
+     * 
+     * @type private
+     */
+    height (prm,opt) {
+        try {
+	    return this.switchOpt("height", prm,opt);
+	} catch (e) {
+            console.error(e.stack);
+	    throw e;
+	}
+    }
+    
+    /**
+     * set width to child
+     * 
+     * @type private
+     */
+    width (prm,opt) {
+        try {
+	    return this.switchOpt("width",prm,opt);
+        } catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
+    
+    /**
+     * set effect to child
+     * 
+     * @type private
+     */
+    effect (prm) {
+        try {
+            return this.switchOpt("effect", prm);
+	} catch (e) {
+	    console.error(e.stack);
+	    throw e;
+	}
+    }
+    
+    /**
+     * set event to chld
+     * 
+     * @type private
+     */
+    event (prm) {
+        try {
+            return this.switchOpt("event", prm);
+        } catch (e) {
+            console.error(e.stack);
+	    throw e;
+        }
+    }
+    
+    /**
+     * set main color to child
+     * 
+     * @type private
+     */
+    mainColor (prm,opt) {
+        try {
+            return this.switchOpt("mainColor",prm,opt);
+	} catch (e) {
+	    console.error(e.stack);  
+	    throw e;
+	}
+    }
+    
+    /**
+     * set base color to child
+     * 
+     * @type private
+     */
+    baseColor (prm,opt) {
+        try {
+            return this.switchOpt("baseColor",prm,opt);
+        } catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
+    
+    /**
+     * set accent color to child
+     * 
+     * @type private
+     */
+    accentColor (prm,opt) {
+        try {
+            return this.switchOpt("accentColor",prm,opt);
+        } catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
+    
+    /**
+     * set option to child
+     * 
+     * @type private
+     */
+    switchOpt (key, p1,p2) {
+        try {
+            if (undefined === p1) {
+                /* getter */
+                return (0 === this.child().length) ? null : this.child()[0][key]();
+            }
+	    /* setter */
+	    let chd = this.child();
+	    for (let cidx in chd) {
+                chd[cidx][key](p1,p2);
+	    }
+	} catch (e) {
+            console.error(e.stack);
+	    throw e;
+	}
+    }
 }
 module.exports = mf.comp.Switch;
 /* end of file */

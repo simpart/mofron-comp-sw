@@ -1,5 +1,5 @@
 /**
- * @file mofron-comp-sw/index.js
+ * @file mofron-comp-switch/index.js
  * @brief switching display components by 'switching' function.
  *        switching the display to a specified index number of the child component.
  *        switch in ascending order if it has no parameter.

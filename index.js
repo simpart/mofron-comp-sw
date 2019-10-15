@@ -1,5 +1,5 @@
 /**
- * @file mofron-comp-switch/index.js
+ * @file mofron-comp-sw/index.js
  * @brief switching display components by 'switching' function.
  *        switching the display to a specified index number of the child component.
  *        switch in ascending order if it has no parameter.
@@ -24,6 +24,7 @@ mf.comp.Switch = class extends mf.Component {
             throw e;
         }
     }
+
     /**
      * initialize switching
      *
@@ -59,11 +60,17 @@ mf.comp.Switch = class extends mf.Component {
             } else if ( (0 > idx) || (chd.length <= idx) ) {
                 throw new Error('invalid index');
             }
+
+            /* check change index */
+	    if (idx === this.index()) {
+                eflg = false;
+	    }
             this.index(idx);
+
+	    /* switch visible */
             for (let cidx in chd) {
                 chd[cidx].visible((cidx == idx) ? true : false);
             }
-
 	    if (false !== eflg) {
                 /* execute switch event */
                 let evt = this.switchEvent();
@@ -141,34 +148,6 @@ mf.comp.Switch = class extends mf.Component {
         } catch (e) {
             console.error(e.stack);
             throw e;
-        }
-    }
-    
-    /**
-     * set effect to child
-     * 
-     * @type private
-     */
-    effect (prm) {
-        try {
-            return this.switchOpt("effect", prm);
-	} catch (e) {
-	    console.error(e.stack);
-	    throw e;
-	}
-    }
-    
-    /**
-     * set event to chld
-     * 
-     * @type private
-     */
-    event (prm) {
-        try {
-            return this.switchOpt("event", prm);
-        } catch (e) {
-            console.error(e.stack);
-	    throw e;
         }
     }
     
